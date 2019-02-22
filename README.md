@@ -33,7 +33,7 @@
 ---
 
 ## 开始使用 
-###邮件 Mail 包：
+### 邮件 Mail 包：
     邮件服务 appid & appkey 请前往：https://www.mysubmail.com/chs/mail/apps
   
     mail 数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
@@ -151,7 +151,7 @@ func MailXsend()  {
 ```
 
 ---
-###短信 SMS 包
+### 短信 SMS 包
     短信服务 appid & appkey 请前往：https://www.mysubmail.com/chs/sms/apps
   
     短信数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
@@ -291,7 +291,7 @@ func SMSMultiXsend() {
 
 ---
 
-##语音 Voice 包
+## 语音 Voice 包
     语音服务 appid & appkey 请前往：https://www.mysubmail.com/chs/voice/apps
   
     语音数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
