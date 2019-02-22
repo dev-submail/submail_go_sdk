@@ -18,7 +18,7 @@ func VoiceSend() {
 	submail.SetTo("138********")
 	submail.SetContent("语音测试")
 	send := submail.Send()
-	fmt.Printf("语音 Send 接口:%s\n",send)
+	fmt.Println("语音 Send 接口:",send)
 }
 
 func InterSMSSend(){
@@ -36,7 +36,7 @@ func InterSMSSend(){
 
 	//执行 Send 方法发送短信
 	send := submail.Send()
-	fmt.Printf("国际短信 Send 接口:%s\n",send)
+	fmt.Println("国际短信 Send 接口:",send)
 
 }
 
@@ -59,7 +59,7 @@ func MailSend()  {
 	submail.AddAttachments("/Users/leozhang/go/src/submail_go_sdk/test_attachment.png")
 	submail.AddAttachments("/Users/leozhang/go/src/submail_go_sdk/test_attachment2.jpg")
 	send := submail.Send()
-	fmt.Println("Request result:%s",send)
+	fmt.Println("邮件 Send 接口:",send)
 }
 
 func SMSSend() {
@@ -81,7 +81,7 @@ func SMSSend() {
 
 	//执行 Send 方法发送短信
 	send := submail.Send()
-	fmt.Printf("短信 Send 接口:%s\n",send)
+	fmt.Println("短信 Send 接口:",send)
 }
 
 func main()  {
