@@ -48,7 +48,7 @@ func (this *mailsend)AddTo(address string,name string){
 	this.to=append(this.to,item)
 }
 
-func (this *mailsend) SetForm(address string,name string){
+func (this *mailsend) SetSender(address string,name string){
 	this.from=address
 	this.fromName=name
 }

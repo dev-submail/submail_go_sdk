@@ -2,7 +2,7 @@
 #### 引入方式：
 1. 下载SDK源码，然后放在$GOPATH/src目录下.
 1. 修改文件夹名为submail_go_sdk。
-1. 在项目下进行模块引用。如短信模块：import (sms "submail_go_sdk/submail/sms")  / 邮件模块 import (mail "submail_go_sdk/submail/mail")
+1. 在项目下进行包引用。如短信包：import (sms "submail_go_sdk/submail/sms")  / 邮件包 import (mail "submail_go_sdk/submail/mail")
 ---
 
 
@@ -32,14 +32,14 @@
 
 ---
 
-### 开始使用 
-### mail包：
+## 开始使用 
+###邮件 Mail 包：
     邮件服务 appid & appkey 请前往：https://www.mysubmail.com/chs/mail/apps
   
     mail 数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
 
 		
-#### send:
+### 邮件 Send 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -53,18 +53,18 @@
 方法名 | 描述 
 ---|---
 CreateSend | 创建邮件Send 接口
-AddTo | 添加邮件地址到 To 数组，第一个必选参数：邮件地址。第二个可选参数：收件人姓名
-SetFrom | 设置发件人，第一个必选参数：邮件地址。第二个可选参数：显示名称
+AddTo | 添加邮件地址到 To map，第一个必选参数：邮件地址。第二个可选参数：收件人姓名
+SetSender | 设置发件人，第一个必选参数：邮件地址。第二个可选参数：显示名称
 SetReply | 设置回复地址
 AddCc | 添加抄送地址
 AddBcc | 添加密送地址
 SetSubject | 设置邮件标题
 SetText | 设置文本邮件内容
 SetHtml | 设置 HTML 邮件内容
-AddVar | 添加文本变量到 vars 数组
-AddLink | 添加超链接变量到 links 数组
-AddHeaders | 添加自定义邮件头指令到 headers 数组
-AddAttachments | 添加附件到 attachments 数组，传多个附件多次调用即可。
+AddVar | 添加文本变量到 vars map
+AddLink | 添加超链接变量到 links map
+AddHeaders | 添加自定义邮件头指令到 headers map
+AddAttachments | 添加附件到 attachments map，传多个附件多次调用即可。
 SetAsynchronous | 设置异步选项，该值设为 true 时启用异步发送模式
 SetTag |  设置自定义标记，此参数用于标记一次 API 请求（最大长度不超过 32 位）添加了 tag 参数的 API 请求，会在所有的 SUBHOOK 事件中携带此参数。
 Send | 发送邮件
@@ -79,7 +79,7 @@ func MailSend()  {
 	config["appkey"]="your_appkey"
 	config["signType"]="sha1"
 	submail := mail.CreateSend(config)
-	submail.SetForm("service@submail.cn","submail")
+	submail.SetSender("service@submail.cn","submail")
 	submail.AddTo("79463@qq.com","Leo")
 	submail.SetSubject("test from go sdks 2")
 	submail.AddCc("drimmestudio@gmail.com")
@@ -91,14 +91,14 @@ func MailSend()  {
 	submail.AddAttachments("/Users/leozhang/go/src/submail_go_sdk/test_attachment.png")
 	submail.AddAttachments("/Users/leozhang/go/src/submail_go_sdk/test_attachment2.jpg")
 	send := submail.Send()
-	fmt.Println("Request result:%s",send)
+	fmt.Println("Request result:",send)
 }
 
 ```
 
 ---
 
-#### xsend:
+### 邮件 xsend 接口:
 - config := make(map[string]string)
 - config["appid"]="your_appid"
 - config["appkey"]="your_appkey"
@@ -109,17 +109,16 @@ func MailSend()  {
 方法  | 描述 
 ---|---
 CreateXsend | 创建邮件xsend 接口
-AddTo | 添加邮件地址到 To 数组，第一个必选参数：邮件地址。第二个可选参数：收件人姓名
-SetFrom | 设置发件人地址
-SetFromName | 设置发件人名称
+AddTo | 添加邮件地址到 To map，第一个必选参数：邮件地址。第二个可选参数：收件人姓名
+SetSender | 设置发件人，第一个必选参数：邮件地址。第二个可选参数：显示名称
 SetReply | 设置回复地址
 AddCc | 添加抄送地址
 AddBcc | 添加密送地址
 SetSubject | 设置邮件标题
 SetProject | 设置邮件项目标识
-AddVar | 添加文本变量到 vars 数组
-AddLink | 添加超链接变量到 links 数组
-AddHeaders | 添加自定义邮件头指令到 headers 数组
+AddVar | 添加文本变量到 vars map
+AddLink | 添加超链接变量到 links map
+AddHeaders | 添加自定义邮件头指令到 headers map
 SetAsynchronous | 设置异步选项，该值设为 true 时启用异步发送模式
 SetTag |  设置自定义标记，此参数用于标记一次 API 请求（最大长度不超过 32 位）添加了 tag 参数的 API 请求，会在所有的 SUBHOOK 事件中携带此参数。
 XSend | 发送邮件
@@ -134,7 +133,7 @@ func MailXsend()  {
 	config["appkey"]="your_appkey"
 	config["signType"]="sha1"
 	submail := mail.CreateXsend(config)
-	submail.SetForm("service@submail.cn","submail")
+	submail.SetSender("service@submail.cn","submail")
 	submail.AddTo("79463@qq.com","Leo")
 	submail.SetSubject("test from go sdks 2")
 	submail.SetProject("Zx3LM")
@@ -146,19 +145,19 @@ func MailXsend()  {
 	submail.SetTag("xxxxxx")
 	submail.SetAsynchronous(true)
 	xsend := submail.Xsend()
-	fmt.Println("Request result:%s",xsend)
+	fmt.Println("Request result:",xsend)
 }
 
 ```
 
 ---
-### sms包
+###短信 SMS 包
     短信服务 appid & appkey 请前往：https://www.mysubmail.com/chs/sms/apps
   
     短信数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
 
 
-#### send:
+### 短信 send 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -193,14 +192,14 @@ Send | 发送短信
 	submail.SetContent("【SUBMAIL】您的验证码是：2234，请在30分钟输入")
 	//执行 Send 方法发送短信
 	send := submail.Send()
-	fmt.Printf("短信 Send 接口:%s\n",send)
+	fmt.Println("短信 Send 接口:",send)
 }
 
 ```
 
 ---
 
-#### Xsend:
+### 短信 Xsend 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -214,7 +213,7 @@ Send | 发送短信
 CreateXsend | 创建短信xsend接口
 SetTo | 设置手机联系人
 SetProject | 设置项目Id
-AddVar | 添加文本变量到 vars 数组
+AddVar | 添加文本变量到 vars map
 SetTag | 设置自定义标记，此参数用于标记一次 API 请求（最大长度不超过 32 位）添加了 tag 参数的 API 请求，会在所有的 SUBHOOK 事件中携带此参数。
 XSend | 发送短信
 
@@ -239,13 +238,13 @@ func SMSXsend() {
 	submail.AddVar("time","5");
 	//执行 Xsend 方法发送短信
 	xsend := submail.Xsend()
-	fmt.Printf("短信XSend 接口:%s\n",xsend)
+	fmt.Println("短信XSend 接口:",xsend)
 
 ```
 
 ---
 
-#### mutilxsend:
+### 短信 mutilxsend 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -287,18 +286,18 @@ func SMSMultiXsend() {
 	submail.AddMulti(multi1.Get());
 	submail.AddMulti(multi2.Get());
 	multixsend := submail.MultiXsend()
-	fmt.Printf("短信MultiXsend 接口:%s\n",multixsend)
+	fmt.Println("短信MultiXsend 接口:",multixsend)
 ```
 
 ---
 
-### voice包
+##语音 Voice 包
     语音服务 appid & appkey 请前往：https://www.mysubmail.com/chs/voice/apps
   
     语音数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
 
 
-#### send:
+### 语音 send 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -338,7 +337,7 @@ Send() | 发送短信
 ```
 
 
-#### xsend:
+### 语音 xsend 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -352,7 +351,7 @@ Send() | 发送短信
 CreateXsend | 创建短信xsend接口
 SetTo | 设置手机联系人
 SetProject | 设置项目Id
-AddVar | 添加文本变量到 vars 数组
+AddVar | 添加文本变量到 vars map
 XSend | 发送语音
 
 **代码示列：**
@@ -376,13 +375,13 @@ func VoiceXsend() {
 	submail.AddVar("time","5");
 	//执行 Xsend 方法发送语音
 	xsend := submail.Xsend()
-	fmt.Printf("语音XSend 接口:%s\n",xsend)
+	fmt.Println("语音XSend 接口:",xsend)
 
 ```
 
 ---
 
-#### mutilxsend:
+### 语音 multixsend 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -423,18 +422,18 @@ func VoiceMultiXsend() {
 	submail.AddMulti(multi1.Get());
 	submail.AddMulti(multi2.Get());
 	multixsend := submail.MultiXsend()
-	fmt.Printf("语音MultiXsend 接口:%s\n",multixsend)
+	fmt.Println("语音 MultiXsend 接口:",multixsend)
 ```
 
 ---
 
-### internationalsms包
+## 国际短信 internationalsms包
     国际短信服务 appid & appkey 请前往：https://www.mysubmail.com/chs/internationalsms/apps
   
     国际短信数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
 
 
-#### send:
+### 国际短信 send 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -469,14 +468,14 @@ Send | 发送短信
 	submail.SetContent("【SUBMAIL】您的验证码是：2234，请在30分钟输入")
 	//执行 Send 方法发送国际短信
 	send := submail.Send()
-	fmt.Printf("国际短信短信 Send 接口:%s\n",send)
+	fmt.Println("国际短信短信 Send 接口:",send)
 }
 
 ```
 
 ---
 
-#### Xsend:
+### 国际短信 xsend 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -490,7 +489,7 @@ Send | 发送短信
 CreateXsend | 创建短信xsend接口
 SetTo | 设置手机联系人
 SetProject | 设置项目Id
-AddVar | 添加文本变量到 vars 数组
+AddVar | 添加文本变量到 vars map
 SetTag | 设置自定义标记，此参数用于标记一次 API 请求（最大长度不超过 32 位）添加了 tag 参数的 API 请求，会在所有的 SUBHOOK 事件中携带此参数。
 XSend | 发送短信
 
@@ -515,13 +514,13 @@ func  InternationalsmXsend() {
 	submail.AddVar("time","5")
 	//执行 Xsend 方法发送国际短信
 	xsend := submail.Xsend()
-	fmt.Printf("短信XSend 接口:%s\n",xsend)
+	fmt.Println("国际短信 XSend 接口:",xsend)
 
 ```
 
 ---
 
-#### mutilxsend:
+### 国际短信 multixsend 接口:
 ##### 服务配置: 
 - config := make(map[string]string)
 - config["appid"]="your_appid"
@@ -563,9 +562,9 @@ func Internationalsms MultiXsend() {
 	submail.AddMulti(multi1.Get());
 	submail.AddMulti(multi2.Get());
 	multixsend := submail.MultiXsend()
-	fmt.Printf("国际短信MultiXsend 接口:%s\n",multixsend)
+	fmt.Println("国际短信 MultiXsend 接口:",multixsend)
 ```
 
 
-具体参数参数传入请参考我们的开发文档[：https://www.mysubmail.com/chs/documents/developer/index]()
+具体 API 参数说明请参考 SUBMAIL 开发文档[：https://www.mysubmail.com/chs/documents/developer/index]()
 
