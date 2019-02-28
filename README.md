@@ -566,5 +566,5 @@ func Internationalsms MultiXsend() {
 ```
 
 
-具体 API 参数说明请参考 SUBMAIL 开发文档[：https://www.mysubmail.com/chs/documents/developer/index]()
+具体 API 参数说明请参考 SUBMAIL 开发文档：[https://www.mysubmail.com/chs/documents/developer/index]()
 
