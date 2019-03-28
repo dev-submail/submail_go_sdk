@@ -36,16 +36,17 @@ func Get(requesturl string) string  {
 }
 
 func Post(requesturl string, postdata map[string]string) string{
-	str_list := make([]string, 0, 32)
+	var r http.Request
+	r.ParseForm()
+
 	for key, val := range postdata {
-		str_list = append(str_list,  key + "=" + val)
+		r.Form.Add(key,val)
 	}
-	sigstr := strings.Join(str_list, "&")
-	
-	body := bytes.NewBuffer([]byte(sigstr))
+
+	body :=strings.NewReader(r.Form.Encode())
 
 	//打印请求体
-	fmt.Println("request:",string(body.Bytes()))
+	fmt.Println("request:",r.Form.Encode())
 
 	retstr, err := http.Post(requesturl, "application/x-www-form-urlencoded;charset=utf-8", body)
 
