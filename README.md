@@ -5,6 +5,9 @@
 1. 在项目下进行包引用。如短信包：import (sms "submail_go_sdk/submail/sms")  / 邮件包 import (mail "submail_go_sdk/submail/mail")
 ---
 
+#### 下载
+
+[SUBMAIL_GO_SDK](https://github.com/dev-submail/submail_go_sdk)
 
 #### 文件目录索引 
 ##### Submail:
@@ -27,6 +30,9 @@
 	    send.go                语音send接口
 	    xsend.go               语音xsend接口
 	    
+	 mms
+	    xsend.go               彩信信xsend接口
+	    multixsend.go          彩信群发接口
 	 lib
 	    lib.go                 处理http请求以及生成signature参数
 
@@ -564,6 +570,109 @@ func Internationalsms MultiXsend() {
 	multixsend := submail.MultiXsend()
 	fmt.Println("国际短信 MultiXsend 接口:",multixsend)
 ```
+
+---
+
+## 彩信 mms包
+    彩信服务 appid & appkey 请前往：https://www.mysubmail.com/chs/mms/apps
+  
+    彩信数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
+
+
+### 彩信 Xsend 接口:
+##### 服务配置: 
+- config := make(map[string]string)
+- config["appid"]="your_appid"
+- config["appkey"]="your_appkey"
+- config["signType"]="sha1"
+
+**使用指引:**
+
+方法  | 描述 
+---|---
+CreateXsend | 创建彩信xsend接口
+SetTo | 设置手机联系人
+SetProject | 设置项目Id
+AddVar | 添加文本变量到 vars map
+SetTag | 设置自定义标记，此参数用于标记一次 API 请求（最大长度不超过 32 位）添加了 tag 参数的 API 请求，会在所有的 SUBHOOK 事件中携带此参数。
+XSend | 发送短信
+
+**代码示列：**
+
+```
+func MMSXsend() {
+	// MMS 彩信服务配置 appid & appkey 请前往：https://www.mysubmail.com/chs/mms/apps 获取
+	config := make(map[string]string)
+	config["appid"]="your_appid"
+	config["appkey"]="your_appkey"
+	// mms 数字签名模式 normal or md5 or sha1 ,normal = 明文appkey鉴权 ，md5 和 sha1 为数字签名鉴权模式
+	config["signType"]="sha1"
+	//创建 短信 Send 接口
+	submail := mms.CreateXsend(config)
+	//设置联系人 手机号码
+	submail.SetTo("your_telephone")
+    //设置彩信模板id
+	submail.SetProject("XV6HJ")
+	//添加模板中的设置的动态变量。如模板为：【xxx】您的验证码是:@var(code),请在@var(time)分钟内输入。
+	submail.AddVar("code","1234");
+	submail.AddVar("time","5");
+	//执行 Xsend 方法发送短信
+	xsend := submail.Xsend()
+	fmt.Println("彩信XSend 接口:",xsend)
+}
+
+```
+
+---
+
+### 彩信 mutilxsend 接口:
+##### 服务配置: 
+- config := make(map[string]string)
+- config["appid"]="your_appid"
+- config["appkey"]="your_appkey"
+- config["signType"]="sha1"
+
+**使用指引:**
+
+方法  | 描述 
+---|---
+CreateMultiXsend | 创建短信CreateMultiXsend接口
+SetProject | 设置项目Id
+CreateMulti| 设置多个发送对象信息
+SetTo | 设置联系人手机号码
+AddVar | 添加模板变量
+AddTag | 添加项目标记，此参数用于标记一次 API 请求（最大长度不超过 32 位）添加了 tag 参数的 API 请求，会在所有的 SUBHOOK 事件中携带此参数。
+MultiXsend| 发送短信
+
+**代码示列：**
+
+```
+func MMSMultiXsend() {
+	config := make(map[string]string)
+	config["appid"]="your_appid"
+	config["appkey"]="your_appkey"
+	config["signType"]="sha1"
+	submail := sms.CreateMultiXsend(config)
+	submail.SetProject("XV6HJ")
+	//添加第一组收件人
+	multi1:=mms.CreateMulti();
+	multi1.SetTo("133XXXXX");
+	multi1.AddVar("code","1234");
+	multi2.AddVar("time","10");
+	//添加第二组收件人
+	multi2:=sms.CreateMulti();
+	multi2.SetTo("133XXXXX");
+	multi2.AddVar("code","1234");
+	multi2.AddVar("time","10");
+	submail.AddMulti(multi1.Get());
+	submail.AddMulti(multi2.Get());
+	multixsend := submail.MultiXsend()
+	fmt.Println("彩信MultiXsend 接口:",multixsend)
+```
+
+---
+
+
 
 
 具体 API 参数说明请参考 SUBMAIL 开发文档：[https://www.mysubmail.com/chs/documents/developer/index]()
