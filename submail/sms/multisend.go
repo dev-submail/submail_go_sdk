@@ -5,34 +5,34 @@ import (
 	lib "submail_go_sdk/submail/lib"
 )
 
-type multixsend struct {
+type multisend struct {
 	appid    string
 	appkey   string
 	signType string
-	project  string
+	content  string
 	multi    []map[string]interface{}
 	tag      string
 }
 
-const multixsendURL = lib.Server + "/message/multixsend"
+const multisendURL = lib.Server + "/message/multisend"
 
-func CreateMultiXsend(config map[string]string) *multixsend {
-	return &multixsend{config["appid"], config["appkey"], config["signType"], "", nil, ""}
+func CreateMultiSend(config map[string]string) *multisend {
+	return &multisend{config["appid"], config["appkey"], config["signType"], "", nil, ""}
 }
 
-func (this *multixsend) SetProject(project string) {
-	this.project = project
+func (this *multisend) SetContent(content string) {
+	this.content = content
 }
 
-func (this *multixsend) AddMulti(multi map[string]interface{}) {
+func (this *multisend) AddMulti(multi map[string]interface{}) {
 	this.multi = append(this.multi, multi)
 }
 
-func (this *multixsend) SetTag(tag string) {
+func (this *multisend) SetTag(tag string) {
 	this.tag = tag
 }
 
-func (this *multixsend) MultiXsend() string {
+func (this *multisend) MultiSend() string {
 	config := make(map[string]string)
 	config["appid"] = this.appid
 	config["appkey"] = this.appkey
@@ -40,7 +40,7 @@ func (this *multixsend) MultiXsend() string {
 
 	request := make(map[string]string)
 	request["appid"] = this.appid
-	request["project"] = this.project
+	request["content"] = this.content
 	if this.signType != "normal" {
 		request["sign_type"] = this.signType
 		request["timestamp"] = lib.GetTimestamp()
@@ -57,5 +57,5 @@ func (this *multixsend) MultiXsend() string {
 		request["multi"] = string(data)
 	}
 
-	return lib.Post(multixsendURL, request)
+	return lib.Post(multisendURL, request)
 }
